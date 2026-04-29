@@ -26,16 +26,17 @@ public class GuestAtddTest {
     public void shouldCreateGuestSuccessfully() throws Exception {
         GuestDto guestDto = new GuestDto();
         guestDto.setIdentification("1065555555");
-        guestDto.setName("Maria Claudia Henao");
-        guestDto.setEmail("ClaudiaHenao@gmail.com");
+        guestDto.setName("Martina la Peligrosa");
+        guestDto.setEmail("mapegrosa@gmail.com");
 
         mockMvc.perform(post("/guest")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(guestDto)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.identification").exists())
-                .andExpect(jsonPath("$.name").value("Maria Claudia Henao"))
-                .andExpect(jsonPath("$.email").value("ClaudiaHenao@gmail.com"));
-
+                .andExpect(jsonPath("$.name").value("Martina la Peligrosa"))
+                .andExpect(jsonPath("$.email").value("mapegrosa@gmail.com"));
     }
+
+
 }
