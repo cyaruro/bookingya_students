@@ -37,7 +37,7 @@ public class GuestTest {
     @Order(2)
     void TestGetGuestByIdentification() throws Exception{
         // 1. Buscamos el huésped directamente por su identificación
-        String identificacionBuscada = "49661722";
+        String identificacionBuscada = "1065896282";
         Guest guest = guestService.getByIdentification(identificacionBuscada);
 
         // 2. ¡Aquí ponemos tu mensaje de éxito para la consola!
@@ -50,7 +50,7 @@ public class GuestTest {
     @Test
     @Order(3)
     void testGetGuestById() throws Exception{
-        String identificacionBuscada = "49661722";
+        String identificacionBuscada = "1065896282";
         Guest guestPorIdentificacion = guestService.getByIdentification(identificacionBuscada);
         Guest guestPorId = guestService.getById(guestPorIdentificacion.getId());
         System.out.println("¡Búsqueda exitosa! Se encontró al huésped por Id: " + guestPorId.getName() + " con ID: " + guestPorId.getId());
@@ -61,10 +61,10 @@ public class GuestTest {
     @Test
     @Order(4)
     void testUpdateGuest() throws Exception{
-        String identificacionBuscada = "49661722";
+        String identificacionBuscada = "1065896282";
         Guest guest = guestService.getByIdentification(identificacionBuscada);
         GuestDto guestDto = new GuestDto();
-        guestDto.setName("Sandro Sanchez");
+        guestDto.setName("Pepa la Rumorosa");
         Guest guestUpdate = guestService.update(guestDto,guest.getId());
         assertEquals(guestDto.getName(), guestUpdate.getName());
     }
@@ -72,7 +72,7 @@ public class GuestTest {
     @Test
     @Order(5)
     void testDeleteGuest() throws Exception {
-        String identificacionBuscada = "49661722";
+        String identificacionBuscada = "1065896282";
         Guest guest = guestService.getByIdentification(identificacionBuscada);
         guestService.delete(guest.getId());
 

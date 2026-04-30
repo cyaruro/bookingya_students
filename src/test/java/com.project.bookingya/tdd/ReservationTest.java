@@ -1,6 +1,8 @@
 package com.project.bookingya.tdd;
 
+import com.project.bookingya.dtos.GuestDto;
 import com.project.bookingya.dtos.ReservationDto;
+import com.project.bookingya.dtos.RoomDto;
 import com.project.bookingya.exceptions.EntityNotExistsException;
 import com.project.bookingya.models.Guest;
 import com.project.bookingya.models.Reservation;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -35,16 +38,47 @@ public class ReservationTest {
 
     @Test
     @Order(1)
+    void TestCreateGuest() throws Exception{
+        GuestDto guestDto = new GuestDto();
+        guestDto.setIdentification("1010101010");
+        guestDto.setName("Pepito Huesped para Reserva");
+        guestDto.setEmail("huespedparareservacione@mailxample.com");
+        Guest guest = guestService.create(guestDto);
+        assertNotNull(guest);
+        assertEquals(guest.getIdentification(), guestDto.getIdentification());
+        assertEquals(guest.getName(), guestDto.getName());
+        assertEquals(guest.getEmail(), guestDto.getEmail());
+    }
+
+    @Test
+    @Order(2)
+    void TestCreateRoom() throws Exception {
+        RoomDto roomDto = new RoomDto();
+        roomDto.setCode("1002");
+        roomDto.setName("Penhouse para Reservación");
+        roomDto.setCity("Dubai - Reservación");
+        roomDto.setMaxGuests(5);
+        roomDto.setNightlyPrice(BigDecimal.valueOf(1000000));
+        roomDto.setAvailable(true);
+        Room room = roomService.create(roomDto);
+        assertNotNull(room);
+        assertEquals(room.getCode(), roomDto.getCode());
+        assertEquals(room.getName(), roomDto.getName());
+        assertEquals(room.getCity(), roomDto.getCity());
+    }
+
+    @Test
+    @Order(3)
     void testCreateReservation() throws Exception {
-        // 1. Obtenemos el huesped y habitación creados en los otros tests
-        Guest guest = guestService.getByIdentification("1065896282");
-        Room room = roomService.getByCode("101");
+        // 1. Obtenemos el huesped y habitación creados en los test anteriores
+        Guest guest = guestService.getByIdentification("1010101010");
+        Room room = roomService.getByCode("1002");
 
         ReservationDto reservationDto = new ReservationDto();
         reservationDto.setCheckIn(LocalDateTime.now());
         reservationDto.setCheckOut(LocalDateTime.now().plusDays(4));
         reservationDto.setGuestId(guest.getId());
-        reservationDto.setGuestsCount(1);
+        reservationDto.setGuestsCount(2);
         reservationDto.setNotes("Nota creación de reservación");
         reservationDto.setRoomId(room.getId());
 
@@ -63,24 +97,24 @@ public class ReservationTest {
     }
 
     @Test
-    @Order(2)
+    @Order(4)
     void testGetReservationById() throws Exception {
         Reservation foundReservation = reservationService.getById(savedReservationId);
 
         assertNotNull(foundReservation);
         assertEquals(savedReservationId, foundReservation.getId());
         assertEquals("Nota creación de reservación", foundReservation.getNotes());
-        assertEquals(1, foundReservation.getGuestsCount());
+        assertEquals(2, foundReservation.getGuestsCount());
         System.out.println("El Id de la reserva es " + foundReservation.getId());
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     void testUpdateReservation() throws Exception{
         Reservation foundUpdate = reservationService.getById(savedReservationId);
         ReservationDto updateDto = new ReservationDto();
         updateDto.setNotes("Nota de Actualización de la reserva");
-        updateDto.setGuestsCount(2);
+        updateDto.setGuestsCount(3);
         updateDto.setCheckIn(foundUpdate.getCheckIn());
         updateDto.setCheckOut(foundUpdate.getCheckOut());
         updateDto.setRoomId(foundUpdate.getRoomId());
@@ -99,7 +133,7 @@ public class ReservationTest {
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     void testDeleteReservation() throws Exception {
         reservationService.delete(savedReservationId);
 

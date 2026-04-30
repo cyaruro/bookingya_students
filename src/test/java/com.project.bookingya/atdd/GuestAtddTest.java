@@ -38,5 +38,4 @@ public class GuestAtddTest {
                 .andExpect(jsonPath("$.email").value("mapegrosa@gmail.com"));
     }
 
-
 }
