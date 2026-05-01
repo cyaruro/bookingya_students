@@ -2,9 +2,9 @@ name: Java CI with Maven & Serenity
 
 on:
   push:
-    branches: [ "main", "estudiantes" ]
+    branches: [ "main", "student" ]
   pull_request:
-    branches: [ "main", "estudiantes" ]
+    branches: [ "main", "student" ]
 
 jobs:
   build:
